@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4, validate } = require('uuid');
 
 const app = express();
 
@@ -71,7 +71,7 @@ app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
   const { user } = request
   const { title, deadline } = request.body
 
-  if (!user.todos.some((task) => task.id === request.params.id)) {
+  if (!user.todos.some((task) => task.id === request.params.id) && !validate(request.params.id)) {
     return response.status(400).json({ message: 'task not found' })
   }
 
@@ -86,7 +86,7 @@ app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
   // Complete aqui
   const { user } = request
 
-  if (!user.todos.some((task) => task.id === request.params.id)) {
+  if (!user.todos.some((task) => task.id === request.params.id) && !validate(request.params.id)) {
     return response.status(400).json({ message: 'task not found' })
   }
 
@@ -100,7 +100,7 @@ app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
   // Complete aqui
   const { user } = request
 
-  if (!user.todos.some((task) => task.id === request.params.id)) {
+  if (!user.todos.some((task) => task.id === request.params.id) && !validate(request.params.id)) {
     return response.status(400).json({ message: 'task not found' })
   }
 
