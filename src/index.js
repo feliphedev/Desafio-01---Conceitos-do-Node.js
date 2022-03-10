@@ -71,7 +71,7 @@ app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
   const { user } = request
   const { title, deadline } = request.body
 
-  if (!user.todos.some((task) => task.id === request.params.id) && !validate(request.params.id)) {
+  if (!user.todos.some((task) => task.id === request.params.id) || !validate(request.params.id)) {
     return response.status(400).json({ message: 'task not found' })
   }
 
@@ -86,8 +86,8 @@ app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
   // Complete aqui
   const { user } = request
 
-  if (!user.todos.some((task) => task.id === request.params.id) && !validate(request.params.id)) {
-    return response.status(400).json({ message: 'task not found' })
+  if (!user.todos.some((task) => task.id === request.params.id) || !validate(request.params.id)) {
+    return response.status(404).json({ message: 'task not found' })
   }
 
   const task = user.todos.find(task => task.id === request.params.id)
@@ -100,8 +100,8 @@ app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
   // Complete aqui
   const { user } = request
 
-  if (!user.todos.some((task) => task.id === request.params.id) && !validate(request.params.id)) {
-    return response.status(400).json({ message: 'task not found' })
+  if (!user.todos.some((task) => task.id === request.params.id) || !validate(request.params.id)) {
+    return response.status(404).json({ message: 'task not found' })
   }
 
   const task = user.todos.findIndex(task => task.id === request.params.id)
